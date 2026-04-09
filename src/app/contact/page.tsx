@@ -1,10 +1,10 @@
-import { Config } from "@/lib/config";
+import config from "@/lib/config";
 import Link from "next/link";
 
 export default function Contact() {
-  const appName = Config.get("NEXT_PUBLIC_APP_NAME") || "Default App Name";
-  const contactEmail = Config.get("NEXT_PUBLIC_CONTACT_EMAIL") || "unknown@email.com";
-  const supportPhone = Config.get("NEXT_PUBLIC_SUPPORT_PHONE") || "unknown phone";
+  const appName = config.get("NEXT_PUBLIC_APP_NAME");
+  const contactEmail = config.get("NEXT_PUBLIC_CONTACT_EMAIL");
+  const supportPhone = config.get("NEXT_PUBLIC_SUPPORT_PHONE");
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
