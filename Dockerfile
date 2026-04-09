@@ -24,7 +24,6 @@ COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
 
-RUN cat .env
 RUN ls -lh
 
 ENV NODE_ENV=production
