@@ -14,7 +14,11 @@ class Config {
   private _env: EnvMap | null = null;
 
   private fetchENV(): void {
-    this._env = { ...process.env };
+    this._env = {
+      NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
+      NEXT_PUBLIC_CONTACT_EMAIL: process.env.NEXT_PUBLIC_CONTACT_EMAIL,
+      NEXT_PUBLIC_SUPPORT_PHONE: process.env.NEXT_PUBLIC_SUPPORT_PHONE,
+    };
   }
 
   private ensureLoaded() {
@@ -36,7 +40,7 @@ class Config {
       throw new Error(`Security Risk: Accessing ${key} on the client side!`);
     }
     this.ensureLoaded();
-    return (this._env?.[key]) as PrivateConfig[K] | undefined;
+    return (this._env?.[key]) || process.env[key] as PrivateConfig[K] | undefined;
   }
 }
 
