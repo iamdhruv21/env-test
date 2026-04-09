@@ -27,4 +27,4 @@ COPY --from=builder /app/public ./public
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-CMD ["node", "server.js"]
+CMD ["server.js"]
