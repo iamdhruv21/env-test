@@ -2,7 +2,7 @@ import config from "@/lib/config";
 import Link from "next/link";
 
 export default function About() {
-  const appName = config.get("NEXT_PUBLIC_APP_NAME");
+  const appName = config.get('NEXT_PUBLIC_APP_NAME');
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">

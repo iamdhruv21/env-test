@@ -1,18 +1,42 @@
-// type AppConfig = Readonly<{
-//
-// }>
+type AppConfig = Readonly<{
+  NEXT_PUBLIC_APP_NAME: string;
+  NEXT_PUBLIC_CONTACT_EMAIL: string;
+  NEXT_PUBLIC_SUPPORT_PHONE: string;
+}>;
+
+type PrivateConfig = AppConfig & {
+  AMAZON_SECRET: string;
+};
+
+type EnvMap = Record<string, string | undefined>;
 
 class Config {
-  get(key: string): string | undefined {
-    return process.env[key];
+  private _env: EnvMap | null = null;
+
+  private fetchENV(): void {
+    this._env = { ...process.env };
   }
 
-  getRequired(key: string): string {
-    const value = this.get(key);
-    if (!value) {
-      throw new Error(`Environment variable ${key} is missing.`);
+  private ensureLoaded() {
+    if (!this._env) {
+      this.fetchENV();
     }
-    return value;
+  }
+
+  get<K extends keyof AppConfig>(key: K): AppConfig[K] | undefined {
+    if (!key.startsWith('NEXT_PUBLIC')) {
+      throw new Error(`Security Risk: Accessing Private ${key} on the client side!`);
+    }
+    this.ensureLoaded();
+    return (this._env?.[key]) as AppConfig[K] | undefined;
+  }
+
+  public getServerSide<K extends keyof PrivateConfig>(key: K): PrivateConfig[K] | undefined {
+    if (typeof window !== "undefined") {
+      throw new Error(`Security Risk: Accessing ${key} on the client side!`);
+    }
+    this.ensureLoaded();
+    return (this._env?.[key]) as PrivateConfig[K] | undefined;
   }
 }
 
